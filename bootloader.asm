@@ -23,6 +23,6 @@ print:
 
 msg db 'Hello, World!', 0  ; Our message, null-terminated
 
-times 510-($-$$) db 0 ; Fill the rest of the 512 bytes with zeros
+times 510-($-$$) db 0 ; Pad rest of the bytes with 0, except the last two.
 dw 0xAA55              ; Boot signature
 
