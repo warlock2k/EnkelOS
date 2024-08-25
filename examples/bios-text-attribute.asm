@@ -6,13 +6,13 @@ start:
     mov ah, 0x09  ; BIOS function to write character and attribute
     mov al, 'A' ; make al store value 0x65
     mov bh, 0x00
-    mov bl, 0x75 ; for color red
+    mov bl, 0x75 ; for color red on white background
     mov cx, 1
 
     ; Initialize cursor position
     mov dh, 8  ; Initial row (start at the top of the screen)
     mov dl, 0x00  ; Initial column (start at the first column)
-    mov ah, 0x02
+    mov ah, 0x02 ; BIOS function to adjust cursor
     int 0x10
 
     call print    ; Call the print function

@@ -1,16 +1,19 @@
-OUTPUT = bootloader.bin
-SOURCE = bootloader.asm
+CFLAGS = -m32 -ffreestanding -O2 -Wall -Wextra
+LDFLAGS = -T linker.ld
 
-ASM = nasm
-ASM_FLAGS = -f bin
+all: myos.bin
 
-all: $(OUTPUT)
+myos.bin: boot.o kernel.o
+	i686-elf-gcc $(LDFLAGS) -o myos.bin boot.o kernel.o -nostdlib -lgcc
 
-$(OUTPUT):$(SOURCE)
-	nasm $(ASM_FLAGS) -o $(OUTPUT) $(SOURCE)
+boot.o: boot.s
+	i686-elf-as boot.s -o boot.o
+
+kernel.o: kernel.c
+	i686-elf-gcc $(CFLAGS) -c kernel.c -o kernel.o
 
 clean:
-	rm -f $(OUTPUT)
+	rm -f *.o myos.bin
 
-run: $(OUTPUT)
-	qemu-system-x86_64.exe $(OUTPUT)
+run: myos.bin
+	qemu-system-i386 -kernel myos.bin
